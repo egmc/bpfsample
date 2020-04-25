@@ -105,7 +105,9 @@ b'/home/ubuntu/.rbenv/versions/2.4.1/bin/ruby' b'ruby':b'array__create'
 
 ```
 
-##
+trace有効にしたもののこちらもうまくいってないのでスルー
+
+## funccount
 
 ```
 sudo funccount-bpfcc '/usr/lib/x86_64-linux-gnu/libmemcached.so.11:*'
@@ -171,16 +173,16 @@ Attaching 1 probe...
 @[mysqld]: 91
 ```
 
-##tcptop
+## tcptop
 
 ```
 sudo tcptop-bpfcc -C 2
 
 ```
 
-##tcpconnect / accept
+## tcpconnect / accept
 
-##tcpretrans
+## tcpretrans
 
 ```
 $ sudo tcpretrans-bpfcc
