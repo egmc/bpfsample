@@ -20,6 +20,27 @@ sudo BPFTRACE_STRLEN=200 bpftrace -e 'uprobe:/usr/lib/x86_64-linux-gnu/libmemcac
 
 ## MySQL sample
 
+あまり振るわず
+
+
+
+
+## PHP sample
+
+```
+$ tplist-bpfcc -l /usr/bin/php
+b'/usr/bin/php' b'php':b'request__startup'
+b'/usr/bin/php' b'php':b'request__shutdown'
+b'/usr/bin/php' b'php':b'compile__file__entry'
+b'/usr/bin/php' b'php':b'compile__file__return'
+b'/usr/bin/php' b'php':b'function__return'
+b'/usr/bin/php' b'php':b'function__entry'
+b'/usr/bin/php' b'php':b'execute__entry'
+b'/usr/bin/php' b'php':b'execute__return'
+b'/usr/bin/php' b'php':b'error'
+b'/usr/bin/php' b'php':b'exception__thrown'
+b'/usr/bin/php' b'php':b'exception__caught'
+```
 
 ## opensnoop
 
