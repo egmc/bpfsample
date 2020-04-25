@@ -10,7 +10,7 @@ BEGIN
 uprobe:/usr/sbin/mysqld:*dispatch_command*
 {
         $COM_QUERY = 3;                // see include/my_command.h
-        printf("%s", str(*arg1));
+        //printf("%s", str(*arg1));
         if (arg2 == $COM_QUERY) {
                 @query[tid] = str(*arg1);
                 @start[tid] = nsecs;
@@ -21,8 +21,10 @@ uretprobe:/usr/sbin/mysqld:*dispatch_command*
 /@start[tid]/
 {
         $dur = (nsecs - @start[tid]) / 1000000;
+        if ($dur > $1) {
                 printf("%-10u %-6d %6d %s\n", elapsed / 1000000,
                     pid, $dur, @query[tid]);
+        }
         delete(@query[tid]);
         delete(@start[tid]);
 }
