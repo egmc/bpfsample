@@ -14,7 +14,7 @@ http://slankdev.hatenablog.com/entry/2017/05/06/164953
  - 現在のBPFはkernel、user-levelのstatic/dynamicなイベント、PMC、perf_eventなどをソースにできるmagic tool
  - berkeleyでもpacketでもfilterでもない
 
-##特徴
+## 特徴
 
  - 安全（instruction verifier）
  - 高速（kernel上での動作）
@@ -40,4 +40,5 @@ http://slankdev.hatenablog.com/entry/2017/05/06/164953
 ## 制約
 
  - 512バイトのスタックサイズ制限
+  - bptraceのstr()で長い文字列を扱うことはできない
  - https://github.com/iovisor/bpftrace/pull/299
