@@ -44,3 +44,11 @@ http://slankdev.hatenablog.com/entry/2017/05/06/164953
  - 512バイトのスタックサイズ制限
   - bptraceのstr()で長い文字列を扱うことはできない
  - https://github.com/iovisor/bpftrace/pull/299
+
+
+## 期待する使いどころ
+
+ - 本番環境でのオンデマンドな調査ツールとして
+  - 関数コールの観測
+  - ボトルネック調査
+  - IP/プロセス単位でのリソース使用状況調査など
