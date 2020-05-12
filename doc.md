@@ -73,7 +73,9 @@ Attaching 11 probes...
 Error finding or enabling probe: usdt:/usr/bin/php:php:request__startup
 ```
 
-usdt試したかったがdtraceオプションつきでビルドしてみてもあからんので諦め
+~~usdt試したかったがdtraceオプションつきでビルドしてみてもあからんので諦め~~
+
+できた https://dasalog.hatenablog.jp/entry/2020/04/30/094503
 
 ## Ruby Sample
 
@@ -152,7 +154,7 @@ negative dentryの調査などによさそう、こういうのとか
 
 https://qiita.com/digitalpeak/items/4b39fdcb8fae7d09f406
 
-# networking 
+# networking
 
 ```
 $ sudo bpftrace -e 'kprobe:sock_sendmsg { @[comm] = count(); }'
@@ -183,6 +185,8 @@ sudo tcptop-bpfcc -C 2
 ## tcpconnect / accept
 
 ## tcpretrans
+
+再送の発生状況をプロセス / 宛先ベースで確認できる
 
 ```
 $ sudo tcpretrans-bpfcc
@@ -215,6 +219,9 @@ TIME     PID    IP LADDR:LPORT          T> RADDR:RPORT          STATE
 
 あたりのライブラリコールをみている
 
+AWS上でよくある名前解決問題の観測とか
+https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-limits
+
 ```
 $ sudo gethostlatency-bpfcc
 TIME      PID    COMM                  LATms HOST
@@ -224,6 +231,86 @@ TIME      PID    COMM                  LATms HOST
 
 ```
 
-## その他諸々
 
-https://speakerdeck.com/takumakume/ebpf-getting-started
+# CPU
+
+## exitsnoop
+
+processes exitを監視、生存期間、exit codeがとれる。
+
+short-livedなプロセスの調査など。
+
+下記はユーザーログイン時の様子の観測
+
+```
+ubuntu@ip-172-31-2-220:~$ sudo exitsnoop-bpfcc
+PCOMM            PID    PPID   TID    AGE(s)  EXIT_CODE
+sshd             8818   8817   8818   0.11    0
+uname            8833   8832   8833   0.00    0
+uname            8836   8832   8836   0.00    0
+uname            8838   8832   8838   0.00    0
+00-header        8832   8831   8832   0.01    0
+10-help-text     8839   8831   8839   0.00    0
+grep             8841   8840   8841   0.00    0
+cut              8845   8843   8845   0.00    0
+50-landscape-sy  8843   8842   8843   0.00    0
+bc               8844   8842   8844   0.00    0
+50-landscape-sy  8842   8840   8842   0.00    0
+date             8846   8840   8846   0.00    0
+uname            8849   8847   8849   0.00    0
+landscape-sysin  8850   8847   8850   0.00    0
+who              8851   8847   8851   0.01    0
+landscape-sysin  8847   8840   8847   0.30    0
+50-landscape-sy  8840   8831   8840   0.31    0
+cat              8853   8852   8853   0.00    0
+head             8854   8852   8854   0.00    0
+```
+
+## runqslower-bpfcc
+
+run queue latencyが一定値以上のプロセス、latencyの出力を行う
+
+
+```
+$ sudo runqslower-bpfcc 100
+Tracing run queue latency higher than 100 us
+TIME     COMM             PID           LAT(us)
+19:38:41 b'mysqld'        1132              321
+19:38:41 b'mysqld'        1132              783
+19:38:47 b'snapd'         598              2201
+19:38:47 b'snapd'         598               236
+19:39:01 b'in:imuxsock'   744               149
+19:39:01 b'gmain'         492               141
+19:39:01 b'runqslower-bpfc' 8942              114
+19:39:01 b'cron'          8943              980
+19:39:01 b'cron'          8943              257
+19:39:01 b'cron'          8944              361
+19:39:01 b'rcu_sched'     11                362
+19:39:01 b'cron'          8943              142
+19:39:01 b'mysqld'        1132             2050
+19:39:01 b'cron'          8943              306
+19:39:05 b'dbus-daemon'   499               812
+```
+
+# Disk I/O
+
+プロセスごとのdisk io 、latency
+
+```
+$ sudo biosnoop-bpfcc |grep -v kworker
+TIME(s)        COMM           PID    DISK    T  SECTOR    BYTES   LAT(ms)
+0.000000000    mysqld         28818  xvda    W  39956472  4096       0.58
+0.000840000    jbd2/xvda1-8   343    xvda    W  4798352   4096       0.48
+0.001036000    jbd2/xvda1-8   343    xvda    W  2215488   28672      0.64
+0.001517000    jbd2/xvda1-8   343    xvda    W  2215544   4096       0.44
+0.206898000    mysqld         28530  xvda    W  39956472  4096       0.56
+0.207693000    jbd2/xvda1-8   343    xvda    W  2215552   12288      0.58
+0.208179000    jbd2/xvda1-8   343    xvda    W  2215576   4096       0.45
+0.216680000    apache2        5205   xvda    R  13506488  4096       0.41
+1.818017000    mysqld         28030  xvda    W  39882752  81920      1.09
+1.818908000    jbd2/xvda1-8   343    xvda    W  2215584   20480      0.63
+1.819481000    jbd2/xvda1-8   343    xvda    W  2215624   4096       0.53
+1.828273000    mysqld         28026  xvda    W  11831584  16384      0.67
+1.828910000    jbd2/xvda1-8   343    xvda    W  2215632   8192       0.53
+1
+```
