@@ -43,13 +43,13 @@ chapter2 Technology Backgroundの図を参照する
 上から難易度の低い順に
 
  - 既存のツールを利用する
-  - `***-bpfcc` なツール群
-  - https://github.com/iovisor/bcc/tree/master/examples
+   - `***-bpfcc` なツール群
+   - https://github.com/iovisor/bcc/tree/master/examples
  - bpftraceを利用する
-  - ワンライナーなプログラム or スクリプトの実行
-  - awkみたいな感覚
+   - ワンライナーなプログラム or スクリプトの実行
+   - awkみたいな感覚
  - 自作する（BCC + python/ruby binding）
-  - python3-bpfcc / rbbcc(https://github.com/udzura/rbbcc)
+   - python3-bpfcc / rbbcc(https://github.com/udzura/rbbcc)
 
 ## 制約
 
