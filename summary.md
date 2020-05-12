@@ -54,7 +54,7 @@ chapter2 Technology Backgroundの図を参照する
 ## 制約
 
  - 512バイトのスタックサイズ制限
-  - bptraceのstr()で長い文字列を扱うことはできない
+   - bptraceのstr()で長い文字列を扱うことはできない
  - https://github.com/iovisor/bpftrace/pull/299
  - bpf program上ではループは使えない（Kernel5.3からbounded loopがサポートされている）
  - BPFの命令セットは当初4096という制限があったが、現在（Kernel5.2以降）は1 millionに拡張されている
@@ -62,6 +62,6 @@ chapter2 Technology Backgroundの図を参照する
 ## 期待する使いどころ
 
  - 本番環境でのオンデマンドな調査ツールとして
-  - 関数コールの観測
-  - ボトルネック調査
-  - IP/プロセス単位でのリソース使用状況調査など
+   - 関数コールの観測
+   - ボトルネック調査
+   - IP/プロセス単位でのリソース使用状況調査など
