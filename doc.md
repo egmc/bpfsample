@@ -1,5 +1,6 @@
 # bpf sample's samples
 
+# トレース系
 
 ## memcached sample
 
@@ -109,50 +110,6 @@ b'/home/ubuntu/.rbenv/versions/2.4.1/bin/ruby' b'ruby':b'array__create'
 
 trace有効にしたもののこちらもうまくいってないのでスルー
 
-## funccount
-
-```
-sudo funccount-bpfcc '/usr/lib/x86_64-linux-gnu/libmemcached.so.11:*'
-Tracing 138 functions for "b'/usr/lib/x86_64-linux-gnu/libmemcached.so.11:*'"... Hit Ctrl-C to end.
-^C
-FUNC                                    COUNT
-b'memcached_set_user_data'                  1
-b'memcached_server_list_append_with_weight'        1
-b'memcached_server_list_free'               1
-b'memcached_create'                         1
-b'memcached_server_push'                    1
-b'memcached'                                1
-b'memcached_server_list_count'              3
-b'memcached_mget'                           7
-b'memcached_result_cas'                     7
-b'memcached_result_key_length'              7
-b'memcached_set'                            7
-b'memcached_result_value'                   7
-b'memcached_result_length'                  7
-b'memcached_mget_by_key'                    7
-b'memcached_result_free'                    7
-b'memcached_result_key_value'               7
-b'memcached_result_create'                  8
-b'memcached_behavior_get'                  14
-b'memcached_result_flags'                  14
-b'memcached_fetch_result'                  14
-b'memcached_result_reset'                  21
-b'memcached_get_user_data'                 29
-b'memcached_server_response_count'         35
-b'memcached_server_count'                 148
-Detaching...
-
-```
-
-## opensnoop
-
-opensnoopでopenに失敗したファイルを出力する
-
-これはrubyスクリプトでも適当にfileコマンドを叩くでもかんたんにサンプルが得られる
-
-negative dentryの調査などによさそう、こういうのとか
-
-https://qiita.com/digitalpeak/items/4b39fdcb8fae7d09f406
 
 # networking
 
@@ -292,7 +249,7 @@ TIME     COMM             PID           LAT(us)
 19:39:05 b'dbus-daemon'   499               812
 ```
 
-# Disk I/O
+# Disk I/Oそのた
 
 プロセスごとのdisk io 、latency
 
@@ -313,4 +270,40 @@ TIME(s)        COMM           PID    DISK    T  SECTOR    BYTES   LAT(ms)
 1.828273000    mysqld         28026  xvda    W  11831584  16384      0.67
 1.828910000    jbd2/xvda1-8   343    xvda    W  2215632   8192       0.53
 1
+```
+
+
+## funccount
+
+```
+sudo funccount-bpfcc '/usr/lib/x86_64-linux-gnu/libmemcached.so.11:*'
+Tracing 138 functions for "b'/usr/lib/x86_64-linux-gnu/libmemcached.so.11:*'"... Hit Ctrl-C to end.
+^C
+FUNC                                    COUNT
+b'memcached_set_user_data'                  1
+b'memcached_server_list_append_with_weight'        1
+b'memcached_server_list_free'               1
+b'memcached_create'                         1
+b'memcached_server_push'                    1
+b'memcached'                                1
+b'memcached_server_list_count'              3
+b'memcached_mget'                           7
+b'memcached_result_cas'                     7
+b'memcached_result_key_length'              7
+b'memcached_set'                            7
+b'memcached_result_value'                   7
+b'memcached_result_length'                  7
+b'memcached_mget_by_key'                    7
+b'memcached_result_free'                    7
+b'memcached_result_key_value'               7
+b'memcached_result_create'                  8
+b'memcached_behavior_get'                  14
+b'memcached_result_flags'                  14
+b'memcached_fetch_result'                  14
+b'memcached_result_reset'                  21
+b'memcached_get_user_data'                 29
+b'memcached_server_response_count'         35
+b'memcached_server_count'                 148
+Detaching...
+
 ```
