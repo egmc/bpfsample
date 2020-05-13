@@ -38,6 +38,8 @@ chapter2 Technology Backgroundの図を参照する
  - sysdig https://www.scsk.jp/sp/sysdig/blog/sysdig/ebpfsysdigfalco.html
  - cillium https://thinkit.co.jp/article/15281 https://github.com/cilium/cilium
 
+なおテトリスも実装できる[https://github.com/mmisono/bpftrace-tetris]
+
 ## BPFによるトレース機構の利用
 
 上から難易度の低い順に
