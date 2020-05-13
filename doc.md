@@ -1,5 +1,6 @@
 # bpf sample's samples
 
+
 # トレース系
 
 ## memcached sample
@@ -248,6 +249,63 @@ TIME     COMM             PID           LAT(us)
 19:39:01 b'cron'          8943              306
 19:39:05 b'dbus-daemon'   499               812
 ```
+
+# メモリ
+
+```
+$ sudo memleak-bpfcc -p `pgrep -f "php-fpm: pool www" |head -n 1` 100
+Attaching to pid 12734, Ctrl+C to quit.
+[11:37:50] Top 10 stacks with outstanding allocations:
+	190 bytes in 1 allocations from stack
+		[unknown] [php-fpm7.2]
+		virtual_file_ex+0x147 [php-fpm7.2]
+		[unknown]
+		[unknown]
+		[unknown]
+		[unknown]
+	268 bytes in 16 allocations from stack
+		[unknown] [libcrypto.so.1.1]
+		[unknown]
+	280 bytes in 1 allocations from stack
+		[unknown] [php-fpm7.2]
+		virtual_file_ex+0x147 [php-fpm7.2]
+		[unknown]
+		[unknown]
+		[unknown]
+		[unknown]
+	288 bytes in 1 allocations from stack
+		[unknown] [php-fpm7.2]
+		virtual_file_ex+0x147 [php-fpm7.2]
+		[unknown]
+		[unknown]
+		[unknown]
+		[unknown]
+	294 bytes in 1 allocations from stack
+		[unknown] [php-fpm7.2]
+		virtual_file_ex+0x147 [php-fpm7.2]
+		[unknown]
+		[unknown]
+		[unknown]
+		[unknown]
+	768 bytes in 16 allocations from stack
+		[unknown] [libcrypto.so.1.1]
+		[unknown]
+	792 bytes in 3 allocations from stack
+		CRYPTO_zalloc+0x9 [libcrypto.so.1.1]
+		[unknown]
+	1024 bytes in 1 allocations from stack
+		[unknown] [php-fpm7.2]
+		[unknown]
+	1560 bytes in 1 allocations from stack
+		[unknown] [libc-2.27.so]
+		getaddrinfo+0x9d1 [libc-2.27.so]
+		[unknown] [libcurl.so.4.5.0]
+		[unknown]
+	11224 bytes in 299 allocations from stack
+		__zend_malloc+0x9 [php-fpm7.2]
+		[unknown]
+```
+
 
 # Disk I/Oそのた
 
